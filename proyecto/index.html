@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InvenSOFT</title>
+  <style>
+    /* Estilos CSS */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-image: url(fondo.jpg);
+      color: #333;
+    }
+
+    header {
+      background-color: #007bff;
+      color: white;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 1rem;
+      font-weight: bold;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      margin: 20px;
+    }
+
+    @media (min-width: 768px) {
+      .container {
+        flex-direction: row;
+      }
+    }
+
+    aside {
+      width: 100%;
+      background-color: #fff;
+      padding: 1rem;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    @media (min-width: 768px) {
+      aside {
+        width: 20%;
+        margin-bottom: 0;
+      }
+    }
+
+    aside ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    aside ul li {
+      margin-bottom: 1rem;
+    }
+
+    aside ul li a {
+      text-decoration: none;
+      color: #007bff;
+      font-weight: bold;
+    }
+
+    main {
+      width: 100%;
+      padding: 1rem;
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+    }
+
+    @media (min-width: 768px) {
+      main {
+        width: 80%;
+      }
+    }
+
+    .inventory-table, .sales-report-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    .inventory-table th, .inventory-table td,
+    .sales-report-table th, .sales-report-table td {
+      border: 1px solid #ddd;
+      padding: 0.5rem;
+      text-align: left;
+    }
+
+    .inventory-table th, .sales-report-table th {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .form-container {
+      margin-top: 1rem;
+    }
+
+    .form-container input, .form-container button, .form-container select {
+      padding: 0.5rem;
+      margin-right: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .form-container select {
+      margin-right: 0.5rem;
+    }
+
+    .form-container button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .form-container button:hover {
+      background-color: #0056b3;
+    }
+
+    .alert {
+      background-color: #ffcccc;
+      color: #b22222;
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 5px;
+      border: 1px solid #b22222;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #007bff;
+      color: white;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+
+    /* Estilos para la pantalla de login */
+    #login-screen {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: url('background.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    .login-form {
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .login-form h2 {
+      margin-bottom: 1rem;
+    }
+
+    .login-form input {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .login-form button {
+      width: 100%;
+      padding: 0.5rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .login-form button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <!-- Pantalla de Login -->
+  <div id="login-screen">
+    <div class="login-form">
+      <img src="logo2.jpg" alt="" style="width: 200px; margin-bottom: 1rem;">
+      <h2>Iniciar Sesión</h2>
+      <input type="text" id="username" placeholder="Usuario" required>
+      <input type="password" id="password" placeholder="Contraseña" required>
+      <button onclick="login()">Ingresar</button>
+    </div>
+  </div>
+
+  <!-- Estructura Principal del Software -->
+  <div id="main-screen" style="display: none;">
+    <header>
+      <img src="logoif/100" alt="" style="width: 100px; margin-right: 5rem;">
+      <h1>InvenSOFT</h1>
+      <nav>
+        <a href="#" onclick="showInicio()">Inicio</a>
+        <a href="#" onclick="logout()">Cerrar Sesión</a>
+      </nav>
+    </header>
+
+    <div class="container">
+      <aside>
+        <ul>
+          <li><a href="#" onclick="showInicio()">Inicio</a></li>
+          <li><a href="#" onclick="showInventory()">Ver Inventario</a></li>
+          <li><a href="#" onclick="showAddProductForm()">Añadir Producto</a></li>
+          <li><a href="#" onclick="showSalesReport()">Reporte de Ventas</a></li>
+        </ul>
+      </aside>
+
+      <main id="main-content">
+        <!-- Contenido dinámico -->
+        <h2 id="section-title">Inicio</h2>
+        <div id="content">
+          <p>Bienvenido al sistema de gestión de inventario.</p>
+        </div>
+      </main>
+    </div>
+
+    <footer>
+      &copy; 2023 InvenSOFT. Todos los derechos reservados.
+    </footer>
+  </div>
+
+  <script>
+    // Base de datos simulada con productos y ventas
+    let database = {
+      products: [
+        { id: 1, nombre: "Laptop", cantidad: 10, precio: 1200 },
+        { id: 2, nombre: "Smartphone", cantidad: 25, precio: 800 },
+        { id: 3, nombre: "Tablet", cantidad: 15, precio: 450 },
+      ],
+      sales: [
+        { fecha: "2023-01-15", producto: "Laptop", cantidad: 2, total: 2400 },
+        { fecha: "2023-02-20", producto: "Smartphone", cantidad: 5, total: 4000 },
+        { fecha: "2023-03-10", producto: "Tablet", cantidad: 3, total: 1350 },
+      ],
+    };
+
+    const adminCredentials = { username: "admin", password: "1234" };
+
+    // Función para iniciar sesión
+    function login() {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (username === adminCredentials.username && password === adminCredentials.password) {
+        document.getElementById("login-screen").style.display = "none";
+        document.getElementById("main-screen").style.display = "block";
+        showInicio(); // Mostrar inicio al iniciar sesión
+      } else {
+        alert("Usuario o contraseña incorrectos.");
+      }
+    }
+
+    // Función para cerrar sesión
+    function logout() {
+      document.getElementById("main-screen").style.display = "none";
+      document.getElementById("login-screen").style.display = "block";
+      document.getElementById("username").value = "";
+      document.getElementById("password").value = "";
+    }
+
+    // Función para mostrar la sección de inicio
+    function showInicio() {
+      updateSection("Inicio", "<p>¡Bienvenido a InvenSOFT! Gestiona, organiza y controla tus productos de forma fácil.</p>");
+    }
+
+    // Función para mostrar el inventario en la tabla
+    function showInventory() {
+      let tableHTML = `
+        <table class="inventory-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Cantidad</th>
+              <th>Precio</th>
+              <th>Total</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="inventory-body">
+      `;
+
+      database.products.forEach(product => {
+        const total = product.cantidad * product.precio; // Cálculo del total
+        tableHTML += `
+          <tr>
+            <td>${product.id}</td>
+            <td>${product.nombre}</td>
+            <td>${product.cantidad}</td>
+            <td>$${product.precio.toFixed(2)}</td>
+            <td>$${total.toFixed(2)}</td>
+            <td>
+              <button onclick="editProduct(${product.id})">Editar</button>
+              <button onclick="deleteProduct(${product.id})">Eliminar</button>
+            </td>
+          </tr>
+        `;
+      });
+
+      tableHTML += `
+          </tbody>
+        </table>
+      `;
+
+      // Verificar alertas de bajo stock
+      const lowStockAlerts = database.products.filter(product => product.cantidad <= 5);
+      if (lowStockAlerts.length > 0) {
+        tableHTML += `<div class="alert">¡Atención! Los siguientes productos tienen bajo stock: ${lowStockAlerts.map(p => p.nombre).join(", ")}</div>`;
+      }
+
+      updateSection("Inventario", tableHTML);
+    }
+
+    // Función para mostrar el formulario de añadir producto
+    function showAddProductForm() {
+      const formHTML = `
+        <div class="form-container">
+          <h3>Añadir Nuevo Producto</h3>
+          <input type="text" id="productName" placeholder="Nombre del producto" required>
+          <input type="number" id="productQuantity" placeholder="Cantidad" required>
+          <input type="number" step="0.01" id="productPrice" placeholder="Precio" required>
+          <button onclick="addProduct()">Añadir</button>
+        </div>
+      `;
+      updateSection("Añadir Producto", formHTML);
+    }
+
+    // Función para añadir un nuevo producto
+    function addProduct() {
+      const productName = document.getElementById("productName").value.trim();
+      const productQuantity = parseInt(document.getElementById("productQuantity").value);
+      const productPrice = parseFloat(document.getElementById("productPrice").value);
+
+      if (productName && !isNaN(productQuantity) && !isNaN(productPrice)) {
+        const newProduct = {
+          id: database.products.length + 1,
+          nombre: productName,
+          cantidad: productQuantity,
+          precio: productPrice,
+        };
+
+        database.products.push(newProduct);
+        alert("Producto añadido correctamente.");
+        showInventory(); // Actualizar la vista del inventario
+      } else {
+        alert("Por favor, complete todos los campos correctamente.");
+      }
+    }
+
+    // Función para eliminar un producto
+    function deleteProduct(productId) {
+      const confirmDelete = confirm("¿Estás seguro de que deseas eliminar este producto?");
+      if (confirmDelete) {
+        database.products = database.products.filter(product => product.id !== productId);
+        alert("Producto eliminado correctamente.");
+        showInventory(); // Actualizar la vista del inventario
+      }
+    }
+
+    // Función para mostrar el formulario de editar producto
+    function editProduct(productId) {
+      const product = database.products.find(p => p.id === productId);
+      if (!product) return;
+
+      const formHTML = `
+        <div class="form-container">
+          <h3>Editar Producto</h3>
+          <input type="text" id="editProductName" placeholder="Nombre del producto" value="${product.nombre}" required>
+          <input type="number" id="editProductQuantity" placeholder="Cantidad" value="${product.cantidad}" required>
+          <input type="number" step="0.01" id="editProductPrice" placeholder="Precio" value="${product.precio}" required>
+          <button onclick="updateProduct(${product.id})">Actualizar</button>
+        </div>
+      `;
+      updateSection("Editar Producto", formHTML);
+    }
+
+    // Función para actualizar un producto
+    function updateProduct(productId) {
+      const productName = document.getElementById("editProductName").value.trim();
+      const productQuantity = parseInt(document.getElementById("editProductQuantity").value);
+      const productPrice = parseFloat(document.getElementById("editProductPrice").value);
+
+      if (productName && !isNaN(productQuantity) && !isNaN(productPrice)) {
+        const product = database.products.find(p => p.id === productId);
+        if (product) {
+          product.nombre = productName;
+          product.cantidad = productQuantity;
+          product.precio = productPrice;
+          alert("Producto actualizado correctamente.");
+          showInventory(); // Actualizar la vista del inventario
+        }
+      } else {
+        alert("Por favor, complete todos los campos correctamente.");
+      }
+    }
+
+    // Función para mostrar el reporte de ventas
+    function showSalesReport() {
+      let tableHTML = `
+        <h3>Ventas Mensuales</h3>
+        <table class="sales-report-table">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Producto</th>
+              <th>Cantidad</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      database.sales.forEach(sale => {
+        tableHTML += `
+          <tr>
+            <td>${sale.fecha}</td>
+            <td>${sale.producto}</td>
+            <td>${sale.cantidad}</td>
+            <td>$${sale.total.toFixed(2)}</td>
+          </tr>
+        `;
+      });
+
+      tableHTML += `
+          </tbody>
+        </table>
+      `;
+
+      updateSection("Reporte de Ventas", tableHTML);
+    }
+
+    // Función para actualizar la sección principal
+    function updateSection(title, content) {
+      const sectionTitle = document.getElementById("section-title");
+      const mainContent = document.getElementById("content");
+
+      sectionTitle.textContent = title;
+      mainContent.innerHTML = content;
+    }
+
+    // Mostrar el inicio al cargar la página
+    document.addEventListener("DOMContentLoaded", () => {
+      // La pantalla de login ya está visible por defecto
+    });
+  </script>
+</body>
+</html>
